@@ -171,6 +171,7 @@ model Partner {
   description String?
   ein         String?          @unique
   products    Product[]
+  Address     Address[]
 
   @@unique([id, name])
 }
