@@ -3,10 +3,14 @@
   "type": "module",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "18.12.1",
+    "npm": "8.19.2"
+  },
   "main": "index.js",
   "scripts": {
     "dev": "node server/index.js",
-    "heroku-postbuild": "cd client && npm && npm run build",
+    "heroku-postbuild": "cd ../client && npm && npm run build",
     "start": "node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
