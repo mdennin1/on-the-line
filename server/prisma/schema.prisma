@@ -95,6 +95,8 @@ model Address {
   updatedAt DateTime?   @updatedAt
   city      String
   country   String      @default("United States")
+  latitude  String?
+  longitude String?
   state     States
   street    String
   partner   Partner?    @relation(fields: [partnerId], references: [id])
@@ -102,6 +104,7 @@ model Address {
   type      AddressType @default(PRIMARY_ADDRESS_TYPE)
   user      User?       @relation(fields: [userId], references: [id])
   userId    String?
+  validated Boolean?
   zip       String
 }
 
@@ -164,11 +167,11 @@ model Partner {
   createdAt   DateTime         @default(now())
   updatedAt   DateTime?        @updatedAt
   name        String
-  Address     Address[]
   charities   PartnerCharity[]
   description String?
   ein         String?          @unique
   products    Product[]
+
   @@unique([id, name])
 }
 
