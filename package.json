@@ -1,32 +1,24 @@
 {
-  "name": "ontheline_app",
-  "type": "module",
+  "name": "onTheLine_app",
   "version": "1.0.0",
-  "description": "",
-  "engines": {
-    "node": "18.12.1",
-    "npm": "8.19.2",
-    "yarn": "1.22.19"
-  },
   "main": "index.js",
-  "scripts": {
-    "build": "cd server && npm install && npm start && cd ../client && npm install && npm run build",
-    "dev": "node server/index.js",
-    "start": "node server/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "Danny Dennin",
-  "license": "ISC",
+  "repository": "https://github.com/mdennin1/on-the-line.git",
+  "type": "module",
+  "author": "Danny Dennin <mdennin1@gmail.com>",
+  "license": "MIT",
   "dependencies": {
     "@apollo/server": "^4.1.1",
     "@prisma/client": "^4.6.1",
     "apollo-server": "^3.11.1",
     "apollo-server-express": "^3.11.1",
+    "create-react-app": "^5.0.1",
     "express": "^4.18.2",
-    "graphql": "^16.6.0"
+    "graphql": "^16.6.0",
+    "nodemon": "^2.0.20"
   },
-  "devDependencies": {
-    "prisma": "^4.6.1"
+  "scripts": {
+    "dev": "nodemon index.js",
+    "heroku-postbuild": "cd react-on-the-line && yarn build",
+    "start": "node index.js"
   }
 }

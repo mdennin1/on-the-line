@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { gql } from "apollo-server-express"; //"apollo-server";
+import { gql } from "apollo-server"; //"apollo-server-express";
 
 const prisma = new PrismaClient()
 export const resolvers = {
