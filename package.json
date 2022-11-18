@@ -19,7 +19,6 @@
   },
   "scripts": {
     "dev": "nodemon index.js",
-    "heroku-postbuild": "cd react-on-the-line && yarn build",
     "start": "node index.js"
   }
 }
