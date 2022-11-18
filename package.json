@@ -10,7 +10,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node server/index.js",
-    "heroku-postbuild": "cd client && npm install && npm run build",
+    "heroku-postbuild": "cd client && yarn install && yarn run build",
     "start": "node server/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
