@@ -19,4 +19,4 @@ import schema from "./graphql/schema.js";
 const server = new ApolloServer(schema);
 const port = process?.env?.PORT ?? process?.env?.developerment?.PORT ?? 4000;
 const {url} = await startStandaloneServer(server, { listen: { port } });
-console.log(`**🚀🚀 server url => ${url}`);
+console.log(`🚀  Server ready at ${url}`);

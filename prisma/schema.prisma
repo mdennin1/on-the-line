@@ -172,6 +172,7 @@ model Partner {
   ein         String?          @unique
   products    Product[]
   address     Address[]
+  users       User[]
 
   @@unique([id, name])
 }
@@ -227,6 +228,8 @@ model User {
   lastLogin  DateTime? @default(now())
   lastName   String?
   orders     Order[]
+  partner    Partner?  @relation(fields: [partnerId], references: [id])
+  partnerId  String?
   password   String
   phone      String?
   profileRef Profile   @relation(fields: [profile], references: [name])
