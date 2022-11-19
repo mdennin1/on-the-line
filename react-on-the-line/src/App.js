@@ -1,5 +1,6 @@
 import logo from './logo.svg';
 import './App.css';
+import ProductList from './components/productList/productList';
 
 function App() {
   return (
@@ -15,9 +16,10 @@ function App() {
           target="_blank"
           rel="noopener noreferrer"
         >
-          Learn React
+          Welcome to On The Line
         </a>
       </header>
+      <ProductList/>
     </div>
   );
 }

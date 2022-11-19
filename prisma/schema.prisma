@@ -171,7 +171,8 @@ model Partner {
   description String?
   ein         String?          @unique
   products    Product[]
-  Address     Address[]
+  address     Address[]
+  users       User[]
 
   @@unique([id, name])
 }
@@ -204,8 +205,8 @@ model Product {
   type          FishType?
   unit          Unit            @default(OZ)
   weight        Float
-  CartItem      CartItem[]
-  OrderItem     OrderItem[]
+  cartItem      CartItem[]
+  orderItem     OrderItem[]
 }
 
 model Profile {
@@ -213,7 +214,7 @@ model Profile {
   createdAt DateTime  @default(now())
   updatedAt DateTime? @updatedAt
   name      String    @unique
-  User      User[]
+  user      User[]
 }
 
 model User {
@@ -227,6 +228,8 @@ model User {
   lastLogin  DateTime? @default(now())
   lastName   String?
   orders     Order[]
+  partner    Partner?  @relation(fields: [partnerId], references: [id])
+  partnerId  String?
   password   String
   phone      String?
   profileRef Profile   @relation(fields: [profile], references: [name])
