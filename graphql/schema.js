@@ -25,6 +25,7 @@ export const resolvers = {
     getAllProducts: async (parent, args, context, info) => await prisma.product.findMany(),
     getAllUsers: async (parent, args, context, info) => await prisma.user.findMany(),
     getPartnerById: async (parent, {id}, context, info) => await prisma.partner.findUnique({where: {id}}),
+    getPartnersByProductType: async (parent, {type}, context, info) => await prisma.partner.findMany({where: {products: {where: {type}}}}),
     getProductById: async (parent, {id}, context, info) => await prisma.product.findUnique({where: {id}}),
     getProductsByOwner: async (parent, {name}, context, info) => await prisma.product.findMany({where: {owner: {name: {contains: name}}}}),
     getProductsByOwnerId: async (parent, {ownerId}, context, info) => await prisma.product.findMany({where: {owner: {id: {contains: ownerId}}}}),
@@ -176,6 +177,7 @@ type Query {
     getAllProducts: [Product!]
     getAllUsers: [User!]
     getPartnerById(id: ID!): Partner
+    getPartnersByProductType(type: String!): [Partner!]
     getProductById(id: ID!): Product
     getProductsByOwner(name: String!): [Product!]
     getProductsByOwnerId(ownerId: String!): [Product!]
