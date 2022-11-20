@@ -10,6 +10,7 @@ const GET_ALL_PRODUCTS = gql`
             id
             name
             description
+            flavorProfile
             price
             weight
             unit
@@ -21,6 +22,7 @@ const ProductList = () => {
     const { data, error, loading } = useQuery(GET_ALL_PRODUCTS);
     if(error) return (<>Error: {error.message}</>);
     if(loading) return (<>...Loading</>);
+    if(data) console.table(data);
     return (
         <ul>
             {
