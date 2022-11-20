@@ -102,7 +102,7 @@ type Query {
     getAllProducts: [Product!]
     getAllUsers: [User!]
     getPartnerById(id: ID!): Partner
-    get ProductById(id: ID!): Product
+    getProductById(id: ID!): Product
     getProductsByOwner(name: String!): [Product!]
     getProductsByOwnerId(ownerId: String!): [Product!]
     getUserById(userId: String!): User
