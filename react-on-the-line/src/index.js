@@ -7,7 +7,7 @@ import { ApolloClient, InMemoryCache, ApolloProvider, gql } from '@apollo/client
 
 const cache = new InMemoryCache();
 const uri = `http://localhost/4000`;
-const client = new ApolloClient({cache, uri})
+const client = new ApolloClient({cache, uri});
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

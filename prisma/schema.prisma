@@ -198,9 +198,9 @@ model Product {
   flavorProfile String?
   minAmount     Int             @default(1)
   price         Float
-  owner         Partner?        @relation(fields: [ownerId, ownerName], references: [id, name])
-  ownerId       String?
-  ownerName     String?
+  owner         Partner         @relation(fields: [ownerId, ownerName], references: [id, name])
+  ownerId       String
+  ownerName     String
   sku           String?
   type          FishType?
   unit          Unit            @default(OZ)

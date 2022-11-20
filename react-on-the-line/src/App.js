@@ -18,8 +18,8 @@ function App() {
         >
           Welcome to On The Line
         </a>
+        <ProductList/>
       </header>
-      <ProductList/>
     </div>
   );
 }

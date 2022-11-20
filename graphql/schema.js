@@ -10,9 +10,11 @@ export const resolvers = {
     getAllPartners: async (parent, args, context, info) => await prisma.partner.findMany(),
     getAllProducts: async (parent, args, context, info) => await prisma.product.findMany(),
     getAllUsers: async (parent, args, context, info) => await prisma.user.findMany(),
-    getUserById: async (parent, {userId}, context, info) => await prisma.user.findUnique({where:{id: userId}}),
+    getPartnerById: async (parent, {id}, context, info) => await prisma.partner.findUnique({where: {id}}),
+    getProductById: async (parent, {id}, context, info) => await prisma.product.findUnique({where: {id}}),
+    getProductsByOwner: async (parent, {name}, context, info) => await prisma.product.findMany({where: {owner: {name: {contains: name}}}}),
     getProductsByOwnerId: async (parent, {ownerId}, context, info) => await prisma.product.findMany({where: {owner: {id: {contains: ownerId}}}}),
-    getProductsByOwner: async (parent, {name}, context, info) => await prisma.product.findMany({where: {owner: {name: {contains: name}}}})
+    getUserById: async (parent, {id}, context, info) => await prisma.user.findUnique({where: {id}}),
   }
 };
 export const typeDefs = gql`
@@ -51,8 +53,10 @@ type Partner{
 type Product{
     id: ID!
     name: String
+    available: Boolean
     category: String
     description: String
+    flavorProfile: String
     minAmount: Int
     ownerId: String
     ownerName: String
@@ -78,13 +82,13 @@ type User{
 }
 
 input ProductInput {
+    ownerId: ID!
     name: String!
-    category: String!
-    description: String
-    minAmount: Int
+    category: String
+    falvorProfile: String
     price: Float!
     type: String
-    unit: String
+    unit: String!
     weight: Float!
 }
 
@@ -97,9 +101,11 @@ type Query {
     getAllPartners: [Partner!]
     getAllProducts: [Product!]
     getAllUsers: [User!]
-    getUserById(userId: String!): User
-    getProductsByOwnerId(ownerId: String!): [Product!]
+    getPartnerById(id: ID!): Partner
+    get ProductById(id: ID!): Product
     getProductsByOwner(name: String!): [Product!]
+    getProductsByOwnerId(ownerId: String!): [Product!]
+    getUserById(userId: String!): User
 }
 `;
 
