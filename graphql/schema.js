@@ -4,7 +4,21 @@ import { gql } from "apollo-server"; //"apollo-server-express";
 const prisma = new PrismaClient()
 export const resolvers = {
   Mutation: {
-    createNewProduct: async (parent, {data}, context) => await prisma.product.create({data})
+    createNewPartner: async (parent, {partner, address, products, charity}, context, info) => {
+        let newPartner;
+        if(products){
+            newPartner = await prisma.partner.create({data: {...partner, address: {create: {data: address}}, products: {createMany: products}}, include: {address: true, products: true}});
+        }else{
+            newPartner = await prisma.partner.create({data: {...partner, address: {create: {data: address}}}, include: {address: true}});
+        }
+        if(charity){
+            const charity = await prisma.charity.create({data: {...charity}});
+            const partnerCharity = await prisma.partnerCharity.create({data: {partner: {connect: {id: partner.id}}, charity: {connect: {id: charity.id}}}});
+        }
+        return newPartner;
+    },
+    createNewProduct: async (parent, {product, ownerId}, context, info) => await prisma.product.create({data: {...product, owner: {connect: {id: ownerId}}}}),
+    updateProduct: async (parent, {product, id}, context, info) => await prisma.product.update({where: {id}, data: product}),
   },
   Query: {
     getAllPartners: async (parent, args, context, info) => await prisma.partner.findMany(),
@@ -14,6 +28,7 @@ export const resolvers = {
     getProductById: async (parent, {id}, context, info) => await prisma.product.findUnique({where: {id}}),
     getProductsByOwner: async (parent, {name}, context, info) => await prisma.product.findMany({where: {owner: {name: {contains: name}}}}),
     getProductsByOwnerId: async (parent, {ownerId}, context, info) => await prisma.product.findMany({where: {owner: {id: {contains: ownerId}}}}),
+    getProductsByType: async (parent, {type}, context, info) => await prisma.product.findMany({where: {type}}),
     getUserById: async (parent, {id}, context, info) => await prisma.user.findUnique({where: {id}}),
   }
 };
@@ -30,9 +45,45 @@ type Address{
     zip: String!
 }
 
+input AddressInput {
+    city: String!
+    latitude: String
+    longitude: String
+    state: String!
+    street: String!
+    type: String!
+    zip: String!
+}
+
 type Cart{
     id: ID!
     userId: String
+}
+
+type Charity {
+    id: ID!
+    name: String!
+    bankName: String
+    description: String
+    ein: String
+    email: String
+    paymentAccountNumber: String!
+    paymentAccountType: String!
+    paymentRoutingNumber: String
+    url: String
+}
+
+input CharityInput {
+    name: String!
+    bankName: String
+    description: String
+    ein: String
+    email: String!
+    paymentAccountNumber: String!
+    paymentAccountType: String!
+    paymentRoutingNumber: String
+    phone: String
+    url: String
 }
 
 type Order{
@@ -41,20 +92,39 @@ type Order{
     userId: String
 }
 
-type Partner{
+type Partner {
     id: ID!
     name: String!
     address: [Address]
+    bankName: String
     description: String
     ein: String
+    email: String
+    paymentAccountNumber: String!
+    paymentAccountType: String!
+    paymentRoutingNumber: String
+    phone: String
     products: [Product]
+    url: String
+}
+
+input PartnerInput {
+    name: String!
+    bankName: String
+    description: String
+    ein: String
+    email: String
+    paymentAccountNumber: String!
+    paymentAccountType: String!
+    paymentRoutingNumber: String
+    phone: String
+    url: String
 }
 
 type Product{
     id: ID!
     name: String
     available: Boolean
-    category: String
     description: String
     flavorProfile: String
     minAmount: Int
@@ -65,6 +135,19 @@ type Product{
     type: String
     unit: String
     weight: Float
+}
+
+input ProductInput {
+    name: String!
+    available: Boolean
+    description: String
+    flavorProfile: String
+    minAmount: Int
+    price: Float!
+    sku: String
+    type: String!
+    unit: String!
+    weight: Float!
 }
 
 type User{
@@ -81,19 +164,10 @@ type User{
     username: String
 }
 
-input ProductInput {
-    ownerId: ID!
-    name: String!
-    category: String
-    falvorProfile: String
-    price: Float!
-    type: String
-    unit: String!
-    weight: Float!
-}
-
 type Mutation {
-    createNewProduct(data: ProductInput!): Product
+    createNewPartner(partner: PartnerInput!, address: AddressInput!, products: [ProductInput], charity: CharityInput!): Partner
+    createNewProduct(product: ProductInput!, ownerId: ID!): Product
+    updateProduct(product: ProductInput!, id: ID!): Product
 }
 
 
@@ -105,6 +179,7 @@ type Query {
     getProductById(id: ID!): Product
     getProductsByOwner(name: String!): [Product!]
     getProductsByOwnerId(ownerId: String!): [Product!]
+    getProductsByType(type: String!): [Product]
     getUserById(userId: String!): User
 }
 `;
