@@ -28,6 +28,11 @@ enum ProductType {
   SWAG
 }
 
+enum SaleMethod {
+  PER_ITEM
+  BY_WEIGHT
+}
+
 enum States {
   AL
   AK
@@ -87,7 +92,7 @@ enum UserRole {
 
 /////////////////////////////**********MODELS*******************/////////////////////////////////////
 model Address {
-  id        Int         @id @default(autoincrement())
+  id        String      @id @default(uuid())
   createdAt DateTime    @default(now())
   updatedAt DateTime?   @updatedAt
   city      String
@@ -101,7 +106,7 @@ model Address {
   type      AddressType @default(PRIMARY_ADDRESS_TYPE)
   user      User?       @relation(fields: [userId], references: [id])
   userId    String?
-  validated Boolean?
+  validated Boolean     @default(false)
   zip       String
 }
 
@@ -193,24 +198,31 @@ model PartnerCharity {
 }
 
 model Product {
-  id            String      @id @default(uuid())
-  createdAt     DateTime    @default(now())
-  updatedAt     DateTime?   @updatedAt
-  name          String
-  available     Boolean     @default(true)
-  description   String?
-  flavorProfile String?
-  minAmount     Int         @default(1)
-  price         Float
-  owner         Partner     @relation(fields: [ownerId, ownerName], references: [id, name])
-  ownerId       String
-  ownerName     String
-  sku           String?
-  type          ProductType
-  unit          Unit        @default(OZ)
-  weight        Float
-  cartItem      CartItem[]
-  orderItem     OrderItem[]
+  id              String      @id @default(uuid())
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime?   @updatedAt
+  name            String
+  allergyInfo     String?
+  available       Boolean     @default(true)
+  description     String?
+  flavorProfile   String?
+  maxAmount       Int?
+  maxWeight       Float?
+  minAmount       Int?
+  minWeight       Float?
+  owner           Partner     @relation(fields: [ownerId, ownerName], references: [id, name])
+  ownerId         String
+  ownerName       String
+  price           Float?
+  saleMethod      SaleMethod  @default(PER_ITEM)
+  sku             String?
+  type            ProductType
+  unit            Unit?       @default(LBS)
+  unitPrice       Float?
+  weight          Float?
+  weightIncrement Float?
+  cartItem        CartItem[]
+  orderItem       OrderItem[]
 }
 
 model Profile {

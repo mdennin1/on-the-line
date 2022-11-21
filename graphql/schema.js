@@ -61,6 +61,13 @@ type Cart{
     userId: String
 }
 
+type CartItem {
+    id: Int!
+    cartId: String!
+    item: String!
+    quantity: Int
+}
+
 type Charity {
     id: ID!
     name: String!
@@ -92,6 +99,13 @@ type Order{
     orderNumber: Int
     userId: String
 }
+
+type OrderItem {
+    id: Int!
+    orderId: String
+    productId: String
+    quantity: Int
+  }
 
 type Partner {
     id: ID!
@@ -125,30 +139,44 @@ input PartnerInput {
 type Product{
     id: ID!
     name: String
+    allergyInfo: String
     available: Boolean
     description: String
     flavorProfile: String
+    maxAmount: Int
+    maxWeight: Float
     minAmount: Int
+    minWeight: Float
     ownerId: String
     ownerName: String
     price: Float
+    saleMethod: String
     sku: String
     type: String
     unit: String
+    unitPrice: Float
     weight: Float
+    weightIncrement: Float
 }
 
 input ProductInput {
     name: String!
+    allergyInfo: String
     available: Boolean
     description: String
     flavorProfile: String
+    maxAmount: Int
+    maxWeight: Float
     minAmount: Int
-    price: Float!
+    minWeight: Float
+    price: Float
+    saleMethod: String
     sku: String
     type: String!
     unit: String!
-    weight: Float!
+    unitPrice: Float
+    weight: Float
+    weightIncrement: Float
 }
 
 type User{
