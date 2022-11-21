@@ -24,8 +24,12 @@
     "yarn": "1.22.19"
   },
   "scripts": {
+    "build": "concurrently \"yarn run server\" \"yarn run clientbuild\"",
     "client": "cd react-on-the-line && yarn start",
+    "clientbuild": "cd react-on-the-line && yarn run build",
     "dev": "node index.js && cd react-on-the-line && yarn start",
+    "devserver": "nodemon index.js",
+    "devstart": "concurrently \"yarn run devserver\" \"yarn run client\"",
     "heroku-postbuild": "cd react-on-the-line && yarn && yarn run build",
     "start": "concurrently \"yarn run server\" \"yarn run client\"",
     "server": "node index.js"

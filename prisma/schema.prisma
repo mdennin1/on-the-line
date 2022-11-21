@@ -17,17 +17,14 @@ enum AddressType {
   PRIMARY_ADDRESS_TYPE
 }
 
-enum FishType {
-  FRESH_WATER
-  SALT_WATER
-}
-
-enum ProductCategory {
+enum ProductType {
   FISH
   MEAL
+  MEAT
   SAUCE
   SHELLFISH
   SIDE
+  SPICE
   SWAG
 }
 
@@ -129,16 +126,20 @@ model CartItem {
 }
 
 model Charity {
-  id             String           @id @default(uuid())
-  createdAt      DateTime         @default(now())
-  updatedAt      DateTime?        @updatedAt
-  name           String
-  ein            String?
-  description    String
-  email          String?
-  partnerChairty PartnerCharity[]
-  phone          String?
-  url            String?
+  id                   String           @id @default(uuid())
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime?        @updatedAt
+  name                 String
+  ein                  String?
+  description          String
+  email                String?
+  bankName             String?
+  paymentAccount       String?
+  paymentAccountType   String?
+  paymentRoutingNumber String?
+  partnerChairty       PartnerCharity[]
+  phone                String?
+  url                  String?
 }
 
 model Order {
@@ -163,16 +164,20 @@ model OrderItem {
 }
 
 model Partner {
-  id          String           @id @default(uuid())
-  createdAt   DateTime         @default(now())
-  updatedAt   DateTime?        @updatedAt
-  name        String
-  charities   PartnerCharity[]
-  description String?
-  ein         String?          @unique
-  products    Product[]
-  address     Address[]
-  users       User[]
+  id                   String           @id @default(uuid())
+  createdAt            DateTime         @default(now())
+  updatedAt            DateTime?        @updatedAt
+  name                 String
+  description          String?
+  ein                  String?          @unique
+  bankName             String?
+  paymentAccount       String?
+  paymentAccountType   String?
+  paymentRoutingNumber String?
+  charities            PartnerCharity[]
+  products             Product[]
+  address              Address[]
+  users                User[]
 
   @@unique([id, name])
 }
@@ -188,22 +193,21 @@ model PartnerCharity {
 }
 
 model Product {
-  id            String          @id @default(uuid())
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime?       @updatedAt
+  id            String      @id @default(uuid())
+  createdAt     DateTime    @default(now())
+  updatedAt     DateTime?   @updatedAt
   name          String
-  available     Boolean         @default(true)
-  category      ProductCategory @default(FISH)
+  available     Boolean     @default(true)
   description   String?
   flavorProfile String?
-  minAmount     Int             @default(1)
+  minAmount     Int         @default(1)
   price         Float
-  owner         Partner         @relation(fields: [ownerId, ownerName], references: [id, name])
+  owner         Partner     @relation(fields: [ownerId, ownerName], references: [id, name])
   ownerId       String
   ownerName     String
   sku           String?
-  type          FishType?
-  unit          Unit            @default(OZ)
+  type          ProductType
+  unit          Unit        @default(OZ)
   weight        Float
   cartItem      CartItem[]
   orderItem     OrderItem[]
