@@ -4,18 +4,23 @@ import { useQuery, gql } from '@apollo/client';
 
 //queries
 const GET_ALL_PRODUCTS = gql`
-    query getAllProducts {
-        products {
-            __typename
-            id
-            name
-            description
-            flavorProfile
-            price
-            weight
-            unit
-        }
-    }`
+query GetAllProducts {
+    getAllProducts {
+      available
+      description
+      flavorProfile
+      id
+      minAmount
+      name
+      ownerId
+      ownerName
+      price
+      sku
+      type
+      unit
+      weight
+    }
+  }`
 
 //component
 const ProductList = () => {
@@ -26,12 +31,13 @@ const ProductList = () => {
     return (
         <ul>
             {
-                data?.map(({id, name, price}) => {
+                data?.getAllProducts?.map?.(({ id, name, price, unit, weight }) => {
+                    const total = price*weight;
                     return (
                         <li key={id}>
                             <span>
                                 <h4>{name}:</h4>
-                                <p>{price}</p>
+                                <p>Unit Price:&nbsp;${price}&nbsp;/&nbsp;{unit}</p>
                             </span>
                         </li>
                     )
