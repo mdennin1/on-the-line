@@ -18,6 +18,7 @@ query GetAllProducts {
       sku
       type
       unit
+      unitPrice
       weight
     }
   }`
@@ -31,13 +32,15 @@ const ProductList = () => {
     return (
         <ul>
             {
-                data?.getAllProducts?.map?.(({ id, name, price, unit, weight }) => {
-                    const total = price*weight;
+                data?.getAllProducts?.map?.(({ id, name, price, unit, unitPrice, weight }) => {
+                    price = weight && unitPrice ? unitPrice*weight : price;
                     return (
                         <li key={id}>
                             <span>
                                 <h4>{name}:</h4>
-                                <p>Unit Price:&nbsp;${price}&nbsp;/&nbsp;{unit}</p>
+                                <p>Unit Price:&nbsp;${unitPrice}&nbsp;/&nbsp;{unit}</p>
+                                {weight ? <p>Weight:&nbsp;{weight}&nbsp;{unit}</p> : null}
+                                <p>Total:&nbsp;${price}</p>
                             </span>
                         </li>
                     )
